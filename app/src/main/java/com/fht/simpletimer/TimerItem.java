@@ -4,6 +4,8 @@ import java.io.Serializable;
 
 public class TimerItem implements Serializable {
 
+    public long id;
+
     // Name of timer
     public String name;
 
@@ -15,6 +17,8 @@ public class TimerItem implements Serializable {
 
     // seconds
     public int second;
+
+    public long startTime;
 
     public TimerItem() {
     }
@@ -28,7 +32,8 @@ public class TimerItem implements Serializable {
 
     public String toString() {
         StringBuilder sb = new StringBuilder(128);
-        sb.append(name).append("', ");
+        sb.append("ID: ").append(id);
+        sb.append(", '").append(name).append("', ");
         sb.append(Utils.formatTime(hour, minute, second));
         return sb.toString();
     }

@@ -17,6 +17,10 @@ import android.widget.BaseAdapter;
 import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
+import android.widget.Toast;
+
+import com.fht.simpletimer.db.DbIniter;
+import com.fht.simpletimer.db.TimerTable;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -42,7 +46,8 @@ public class MainActivity extends AppCompatActivity {
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
-        mTimers = getTimerList();
+        DbIniter.init();
+        mTimers = new TimerTable(this).getTimerList();
         Log.i(TAG, "Exist timers:");
         for (TimerItem item: mTimers) {
             Log.i(TAG, "\t" + item.toString());
@@ -146,12 +151,20 @@ public class MainActivity extends AppCompatActivity {
 
     void addTimer(Intent intent) {
         TimerItem timerItem = (TimerItem)intent.getSerializableExtra(Const.TIMER);
-        mTimers.add(timerItem);
-        mAdapter.notifyDataSetChanged();
-        Log.i(TAG, "Create timer. " + timerItem);
+        timerItem.id = new TimerTable(this).addTimer(timerItem);
+        if (-1 != timerItem.id) {
+            mTimers.add(timerItem);
+            mAdapter.notifyDataSetChanged();
+            Log.i(TAG, "Create timer. " + timerItem);
+        } else {
+            String msg = "Can't create timer. " + timerItem;
+            Log.e(TAG, msg);
+            Toast.makeText(this, msg, Toast.LENGTH_SHORT).show();
+        }
     }
 
     void deleteTimer(TimerItem timerItem, int index) {
+        new TimerTable(this).delete(timerItem.id);
         mTimers.remove(index);
         mAdapter.notifyDataSetChanged();
         Log.i(TAG, "Delete timer. " + timerItem);
@@ -166,6 +179,7 @@ public class MainActivity extends AppCompatActivity {
         item.hour = back.hour;
         item.minute = back.minute;
         item.second = back.second;
+        new TimerTable(this).updateTimer(item);
         mAdapter.notifyDataSetChanged();
         Log.i(TAG, "Update timer. " + item);
     }
