@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:padding="5dp">
+
+    <TextView
+        android:id="@+id/timerName"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentTop="true"
+        android:text="Timer Name"
+        android:textSize="17sp"
+        android:textStyle="bold" />
+
+    <TextView
+        android:id="@+id/totalTime"
+        android:layout_width="100dp"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/timerName"
+        android:layout_marginTop="5dp"
+        android:text="Total Time" />
+
+    <TextView
+        android:id="@+id/remainTime"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignTop="@id/totalTime"
+        android:layout_toEndOf="@id/totalTime"
+        android:text="Remain Time" />
+
+    <ImageView
+        android:id="@+id/status"
+        android:layout_width="30dp"
+        android:layout_height="30dp"
+        android:layout_alignParentEnd="true"
+        android:layout_centerVertical="true"
+        app:srcCompat="@android:drawable/ic_media_play" />
+
+</RelativeLayout>
