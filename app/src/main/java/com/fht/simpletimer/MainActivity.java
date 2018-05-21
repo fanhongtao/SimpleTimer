@@ -59,6 +59,9 @@ public class MainActivity extends AppCompatActivity {
         int id = item.getItemId();
 
         switch (id) {
+            case R.id.action_add:
+                startAddTimerActivity();
+                return true;
             case R.id.action_settings:
                 startSettingActivity();
                 return true;
@@ -70,6 +73,11 @@ public class MainActivity extends AppCompatActivity {
     void startSettingActivity() {
         Intent intent = new Intent(this, SettingActivity.class);
         startActivity(intent);
+    }
+
+    void startAddTimerActivity() {
+        Intent intent = new Intent(this, TimerEditActivity.class);
+        startActivityForResult(intent, 0);
     }
 
     private void showRemainedTime(TextView textView, long remainedTime) {

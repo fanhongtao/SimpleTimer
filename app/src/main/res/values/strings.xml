@@ -1,4 +1,5 @@
 <resources>
     <string name="app_name">SimpleTimer</string>
+    <string name="action_add">Add</string>
     <string name="action_settings">Settings</string>
 </resources>
