@@ -1,6 +1,8 @@
 package com.fht.simpletimer;
 
-public class TimerItem {
+import java.io.Serializable;
+
+public class TimerItem implements Serializable {
 
     // Name of timer
     public String name;
@@ -13,6 +15,9 @@ public class TimerItem {
 
     // seconds
     public int second;
+
+    public TimerItem() {
+    }
 
     public TimerItem(String name, int hour, int minute, int second) {
         this.name = name;

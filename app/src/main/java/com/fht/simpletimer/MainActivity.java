@@ -22,6 +22,8 @@ import java.util.List;
 public class MainActivity extends AppCompatActivity {
     private static final String TAG = Const.TAG + MainActivity.class.getSimpleName();
 
+    private final int ADD_TIMER = 1;
+
     protected TimerListAdapter mAdapter;
 
     // All the timers.
@@ -70,6 +72,20 @@ public class MainActivity extends AppCompatActivity {
         return super.onOptionsItemSelected(item);
     }
 
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        switch (requestCode) {
+            case ADD_TIMER:
+                if (resultCode == RESULT_OK){
+                    addTimer(data);
+                } else {
+                    Log.i(TAG, "Add canceled.");
+                }
+                break;
+        }
+    }
+
     void startSettingActivity() {
         Intent intent = new Intent(this, SettingActivity.class);
         startActivity(intent);
@@ -77,7 +93,14 @@ public class MainActivity extends AppCompatActivity {
 
     void startAddTimerActivity() {
         Intent intent = new Intent(this, TimerEditActivity.class);
-        startActivityForResult(intent, 0);
+        startActivityForResult(intent, ADD_TIMER);
+    }
+
+    void addTimer(Intent intent) {
+        TimerItem timerItem = (TimerItem)intent.getSerializableExtra(Const.TIMER);
+        mTimers.add(timerItem);
+        mAdapter.notifyDataSetChanged();
+        Log.i(TAG, "Create timer. " + timerItem);
     }
 
     private void showRemainedTime(TextView textView, long remainedTime) {
