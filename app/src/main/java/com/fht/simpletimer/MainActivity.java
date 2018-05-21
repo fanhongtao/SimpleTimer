@@ -28,6 +28,7 @@ public class MainActivity extends AppCompatActivity {
     private final int EDIT_TIMER = 2;
 
     private final int MENU_EDIT_TIMER = 1;
+    private final int MENU_DELETE_TIMER = 2;
 
     protected TimerListAdapter mAdapter;
 
@@ -56,6 +57,7 @@ public class MainActivity extends AppCompatActivity {
                                             ContextMenu.ContextMenuInfo menuInfo) {
                 menu.setHeaderTitle(R.string.menu_title_operation);
                 menu.add(0, MENU_EDIT_TIMER, 0, R.string.menu_edit);
+                menu.add(0, MENU_DELETE_TIMER, 0, R.string.menu_delete);
             }
         });
     }
@@ -95,6 +97,9 @@ public class MainActivity extends AppCompatActivity {
         switch (item.getItemId()) {
             case MENU_EDIT_TIMER:
                 startEditTimerActivity(timerItem, index);
+                return true;
+            case MENU_DELETE_TIMER:
+                deleteTimer(timerItem, index);
                 return true;
             default:
                 return super.onContextItemSelected(item);
@@ -144,6 +149,12 @@ public class MainActivity extends AppCompatActivity {
         mTimers.add(timerItem);
         mAdapter.notifyDataSetChanged();
         Log.i(TAG, "Create timer. " + timerItem);
+    }
+
+    void deleteTimer(TimerItem timerItem, int index) {
+        mTimers.remove(index);
+        mAdapter.notifyDataSetChanged();
+        Log.i(TAG, "Delete timer. " + timerItem);
     }
 
     void updateTimer(Intent intent) {
