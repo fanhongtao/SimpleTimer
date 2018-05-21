@@ -6,11 +6,13 @@ import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
+import android.view.ContextMenu;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
 import android.widget.BaseAdapter;
 import android.widget.ImageView;
 import android.widget.ListView;
@@ -23,6 +25,9 @@ public class MainActivity extends AppCompatActivity {
     private static final String TAG = Const.TAG + MainActivity.class.getSimpleName();
 
     private final int ADD_TIMER = 1;
+    private final int EDIT_TIMER = 2;
+
+    private final int MENU_EDIT_TIMER = 1;
 
     protected TimerListAdapter mAdapter;
 
@@ -44,6 +49,15 @@ public class MainActivity extends AppCompatActivity {
         ListView listView = findViewById(R.id.timerList);
         mAdapter = new TimerListAdapter();
         listView.setAdapter(mAdapter);
+
+        listView.setOnCreateContextMenuListener(new View.OnCreateContextMenuListener() {
+            @Override
+            public void onCreateContextMenu(ContextMenu menu, View v,
+                                            ContextMenu.ContextMenuInfo menuInfo) {
+                menu.setHeaderTitle(R.string.menu_title_operation);
+                menu.add(0, MENU_EDIT_TIMER, 0, R.string.menu_edit);
+            }
+        });
     }
 
     @Override
@@ -73,6 +87,21 @@ public class MainActivity extends AppCompatActivity {
     }
 
     @Override
+    public boolean onContextItemSelected(MenuItem item) {
+        AdapterView.AdapterContextMenuInfo info = (AdapterView.AdapterContextMenuInfo) item.getMenuInfo();
+        int index = (int)info.id;
+        TimerItem timerItem = mTimers.get(index);
+        Log.i(TAG, "Click ContextMenu " + item.getItemId() + ". " + timerItem.toString());
+        switch (item.getItemId()) {
+            case MENU_EDIT_TIMER:
+                startEditTimerActivity(timerItem, index);
+                return true;
+            default:
+                return super.onContextItemSelected(item);
+        }
+    }
+
+    @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
         switch (requestCode) {
@@ -81,6 +110,13 @@ public class MainActivity extends AppCompatActivity {
                     addTimer(data);
                 } else {
                     Log.i(TAG, "Add canceled.");
+                }
+                break;
+            case EDIT_TIMER:
+                if (resultCode == RESULT_OK){
+                    updateTimer(data);
+                } else {
+                    Log.i(TAG, "Edit canceled.");
                 }
                 break;
         }
@@ -96,11 +132,31 @@ public class MainActivity extends AppCompatActivity {
         startActivityForResult(intent, ADD_TIMER);
     }
 
+    void startEditTimerActivity(TimerItem timerItem, int index) {
+        Intent intent = new Intent(this, TimerEditActivity.class);
+        intent.putExtra(Const.INDEX, index);
+        intent.putExtra(Const.TIMER, timerItem);
+        startActivityForResult(intent, EDIT_TIMER);
+    }
+
     void addTimer(Intent intent) {
         TimerItem timerItem = (TimerItem)intent.getSerializableExtra(Const.TIMER);
         mTimers.add(timerItem);
         mAdapter.notifyDataSetChanged();
         Log.i(TAG, "Create timer. " + timerItem);
+    }
+
+    void updateTimer(Intent intent) {
+        int index = intent.getIntExtra(Const.INDEX, 0);
+        TimerItem item = mTimers.get(index);
+
+        TimerItem back = (TimerItem)intent.getSerializableExtra(Const.TIMER);
+        item.name = back.name;
+        item.hour = back.hour;
+        item.minute = back.minute;
+        item.second = back.second;
+        mAdapter.notifyDataSetChanged();
+        Log.i(TAG, "Update timer. " + item);
     }
 
     private void showRemainedTime(TextView textView, long remainedTime) {

@@ -14,7 +14,6 @@ public class TimerEditActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_timer_edit);
-        setTitle(R.string.title_add_timer);
 
         final TextView nameView = findViewById(R.id.timerName);
 
@@ -30,6 +29,21 @@ public class TimerEditActivity extends AppCompatActivity {
         secondPicker.setMaxValue(59);
         secondPicker.setMinValue(0);
 
+        Intent requestIntent = getIntent();
+        final int index = requestIntent.getIntExtra(Const.INDEX, -1);
+        if (index != -1) {
+            // edit mode
+            setTitle(R.string.title_edit_timer);
+            TimerItem timerItem = (TimerItem)requestIntent.getSerializableExtra(Const.TIMER);
+            nameView.setText(timerItem.name);
+            hourPicker.setValue(timerItem.hour);
+            minutePicker.setValue(timerItem.minute);
+            secondPicker.setValue(timerItem.second);
+        } else {
+            // add mode
+            setTitle(R.string.title_add_timer);
+        }
+
         Button okBtn = findViewById(R.id.okButton);
         okBtn.setOnClickListener(new OnClickListener() {
             @Override
@@ -41,6 +55,7 @@ public class TimerEditActivity extends AppCompatActivity {
                 timerItem.second = secondPicker.getValue();
 
                 Intent intent = new Intent();
+                intent.putExtra(Const.INDEX, index);
                 intent.putExtra(Const.TIMER, timerItem);
                 setResult(RESULT_OK, intent);
                 finish();
