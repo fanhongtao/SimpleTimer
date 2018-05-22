@@ -25,6 +25,7 @@ import android.widget.Toast;
 import com.fht.simpletimer.db.DbIniter;
 import com.fht.simpletimer.db.TimerTable;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -42,6 +43,7 @@ public class MainActivity extends AppCompatActivity {
 
     // All the timers.
     private List<TimerItem> mTimers;
+    private List<TimerItem> mRunningList;
 
     private Map<Integer, MyCountDownTimer> map;
 
@@ -53,12 +55,25 @@ public class MainActivity extends AppCompatActivity {
         setSupportActionBar(toolbar);
 
         map = new HashMap<>();
+        mRunningList = new ArrayList<>();
         DbIniter.init();
         mTimers = new TimerTable(this).getTimerList();
         Log.i(TAG, "Exist timers:");
         for (TimerItem item: mTimers) {
             Log.i(TAG, "\t" + item.toString());
         }
+        long currTime = System.currentTimeMillis();
+        for (TimerItem item : mTimers) {
+            if (item.startTime != 0) {
+                long remainTime = currTime - item.startTime;
+                if (remainTime > 0) {
+                    item.running = true;
+                    Log.i(TAG, "Timer : " + item.id + " is running...");
+                    mRunningList.add(item);
+                }
+            }
+        }
+
         ListView listView = findViewById(R.id.timerList);
         mAdapter = new TimerListAdapter();
         listView.setAdapter(mAdapter);
@@ -193,6 +208,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
     void deleteTimer(TimerItem timerItem, int index) {
+        cancelTimer(timerItem);
         new TimerTable(this).delete(timerItem.id);
         mTimers.remove(index);
         mAdapter.notifyDataSetChanged();
@@ -202,12 +218,15 @@ public class MainActivity extends AppCompatActivity {
     void updateTimer(Intent intent) {
         int index = intent.getIntExtra(Const.INDEX, 0);
         TimerItem item = mTimers.get(index);
+        cancelTimer(item);
 
         TimerItem back = (TimerItem)intent.getSerializableExtra(Const.TIMER);
         item.name = back.name;
         item.hour = back.hour;
         item.minute = back.minute;
         item.second = back.second;
+        item.startTime = item.remainTime = 0;
+        item.running = false;
         new TimerTable(this).updateTimer(item);
         mAdapter.notifyDataSetChanged();
         Log.i(TAG, "Update timer. " + item);
@@ -225,6 +244,9 @@ public class MainActivity extends AppCompatActivity {
             item.resetRemainTime();
         }
         item.startTime = System.currentTimeMillis();
+        TimerTable table = new TimerTable(this);
+        table.setStartTime(item);
+        table.setRemainTime(item);
 
         createCountTimer(item, remainTimeView, item.remainTime);
 
@@ -248,6 +270,10 @@ public class MainActivity extends AppCompatActivity {
         Log.i(TAG, "Before cancel: " + item);
         item.calcRemainTime(currTime);
         item.startTime = 0;
+        item.running = false;
+        TimerTable table = new TimerTable(this);
+        table.setRemainTime(item);
+        table.setStartTime(item);
         Log.i(TAG, "After cancel: " + item);
 
         Log.i(TAG, "Cancel timer. ID: " + item.id);
@@ -322,6 +348,15 @@ public class MainActivity extends AppCompatActivity {
                 holder.status.setImageResource(android.R.drawable.ic_media_pause);
             } else {
                 holder.status.setImageResource(android.R.drawable.ic_media_play);
+            }
+
+            if (!mRunningList.isEmpty() && item.running) {
+                if (mRunningList.contains(item) && !map.containsKey(item.id)) {
+                    Log.i(TAG, "Create count timer by TimerListAdapter");
+                    long remainTime = item.remainTime - (System.currentTimeMillis() - item.startTime);
+                    createCountTimer(item, holder.remainTime, remainTime);
+                    mRunningList.remove(item);
+                }
             }
 
             return convertView;

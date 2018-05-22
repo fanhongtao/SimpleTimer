@@ -19,6 +19,8 @@ public class TimerTable extends Table<TimerItem> {
     private static final String COL_MINUTE = "minute";
     private static final String COL_SECOND = "second";
     private static final String COL_CREATE_TIME = "create_time";
+    private static final String COL_START_TIME = "start_time";
+    private static final String COL_REMAIN_TIME = "remain_time";
 
     public TimerTable(Context context) {
         super(context, TABLE_NAME, COL_ID);
@@ -33,6 +35,8 @@ public class TimerTable extends Table<TimerItem> {
         columns.add(new TableColumn(COL_MINUTE, "integer"));
         columns.add(new TableColumn(COL_SECOND, "integer"));
         columns.add(new TableColumn(COL_CREATE_TIME, "integer"));
+        columns.add(new TableColumn(COL_START_TIME, "integer default 0"));
+        columns.add(new TableColumn(COL_REMAIN_TIME, "integer default 0"));
         return columns;
     }
 
@@ -78,6 +82,8 @@ public class TimerTable extends Table<TimerItem> {
         item.hour = cursor.getInt(cursor.getColumnIndex(COL_HOUR));
         item.minute = cursor.getInt(cursor.getColumnIndex(COL_MINUTE));
         item.second = cursor.getInt(cursor.getColumnIndex(COL_SECOND));
+        item.startTime = cursor.getLong(cursor.getColumnIndex(COL_START_TIME));
+        item.remainTime = cursor.getLong(cursor.getColumnIndex(COL_REMAIN_TIME));
         return item;
     }
 
@@ -91,6 +97,20 @@ public class TimerTable extends Table<TimerItem> {
         value.put(COL_HOUR, item.hour);
         value.put(COL_MINUTE, item.minute);
         value.put(COL_SECOND, item.second);
+        value.put(COL_START_TIME, item.startTime);
+        value.put(COL_REMAIN_TIME, item.remainTime);
+        return update(value, item.id);
+    }
+
+    public int setStartTime(TimerItem item) {
+        ContentValues value = new ContentValues();
+        value.put(COL_START_TIME, item.startTime);
+        return update(value, item.id);
+    }
+
+    public int setRemainTime(TimerItem item) {
+        ContentValues value = new ContentValues();
+        value.put(COL_REMAIN_TIME, item.remainTime);
         return update(value, item.id);
     }
 }
