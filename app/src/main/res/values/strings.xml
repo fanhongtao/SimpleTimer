@@ -7,6 +7,7 @@
     <string name="label_name">Name</string>
     <string name="hint_timer_name">Timer\'s name</string>
     <string name="title_add_timer">Add Timer</string>
+    <string name="title_alarm">Alarm</string>
     <string name="title_edit_timer">Edit Timer</string>
     <string name="title_settings">Settings</string>
 

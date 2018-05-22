@@ -57,7 +57,8 @@ public class MainActivity extends AppCompatActivity {
         map = new HashMap<>();
         mRunningList = new ArrayList<>();
         DbIniter.init();
-        mTimers = new TimerTable(this).getTimerList();
+        TimerTable table = new TimerTable(this);
+        mTimers = table.getTimerList();
         Log.i(TAG, "Exist timers:");
         for (TimerItem item: mTimers) {
             Log.i(TAG, "\t" + item.toString());
@@ -65,11 +66,16 @@ public class MainActivity extends AppCompatActivity {
         long currTime = System.currentTimeMillis();
         for (TimerItem item : mTimers) {
             if (item.startTime != 0) {
-                long remainTime = currTime - item.startTime;
-                if (remainTime > 0) {
+                if (currTime < item.startTime + item.remainTime) {
                     item.running = true;
                     Log.i(TAG, "Timer : " + item.id + " is running...");
                     mRunningList.add(item);
+                } else {
+                    item.running = false;
+                    item.startTime = item.remainTime = 0;
+                    table.setStartTime(item);
+                    table.setRemainTime(item);
+                    Log.i(TAG, "Timer : " + item.id + " is expired.");
                 }
             }
         }
