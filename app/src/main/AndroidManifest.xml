@@ -20,7 +20,8 @@
             </intent-filter>
         </activity>
         <activity android:name=".SettingActivity" />
-        <activity android:name=".TimerEditActivity"></activity>
+        <activity android:name=".TimerEditActivity" />
+        <activity android:name=".AlarmActivity"></activity>
     </application>
 
 </manifest>
