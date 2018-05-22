@@ -14,6 +14,7 @@
     <string name="menu_title_operation">Operation</string>
     <string name="menu_edit">Edit</string>
     <string name="menu_delete">Delete</string>
+    <string name="menu_reset">Reset</string>
 
     <string name="pref_ring_tone_title">Set Ringtone</string>
     <string name="pref_ring_tone_summary">Choose your favorite voice as timer\'s tone.</string>

@@ -38,6 +38,7 @@ public class MainActivity extends AppCompatActivity {
 
     private final int MENU_EDIT_TIMER = 1;
     private final int MENU_DELETE_TIMER = 2;
+    private final int MENU_RESET_TIMER = 3;
 
     protected TimerListAdapter mAdapter;
 
@@ -103,6 +104,7 @@ public class MainActivity extends AppCompatActivity {
             public void onCreateContextMenu(ContextMenu menu, View v,
                                             ContextMenu.ContextMenuInfo menuInfo) {
                 menu.setHeaderTitle(R.string.menu_title_operation);
+                menu.add(0, MENU_RESET_TIMER, 0, R.string.menu_reset);
                 menu.add(0, MENU_EDIT_TIMER, 0, R.string.menu_edit);
                 menu.add(0, MENU_DELETE_TIMER, 0, R.string.menu_delete);
             }
@@ -155,6 +157,9 @@ public class MainActivity extends AppCompatActivity {
                 return true;
             case MENU_DELETE_TIMER:
                 deleteTimer(timerItem, index);
+                return true;
+            case MENU_RESET_TIMER:
+                resetTimer(timerItem);
                 return true;
             default:
                 return super.onContextItemSelected(item);
@@ -219,6 +224,16 @@ public class MainActivity extends AppCompatActivity {
         mTimers.remove(index);
         mAdapter.notifyDataSetChanged();
         Log.i(TAG, "Delete timer. " + timerItem);
+    }
+
+    void resetTimer(TimerItem timerItem) {
+        cancelTimer(timerItem);
+        timerItem.startTime = timerItem.remainTime = 0;
+        TimerTable table = new TimerTable(this);
+        table.setRemainTime(timerItem);
+        table.setStartTime(timerItem);
+        mAdapter.notifyDataSetChanged();
+        Log.i(TAG, "Reset timer. " + timerItem);
     }
 
     void updateTimer(Intent intent) {
