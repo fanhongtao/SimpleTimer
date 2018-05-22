@@ -18,16 +18,27 @@ public class TimerItem implements Serializable {
     // seconds
     public int second;
 
+    // Start time in milliseconds
     public long startTime;
+
+    // Remained time in milliseconds
+    public long remainTime;
+
+    // If the timer is running or not.
+    public boolean running;
 
     public TimerItem() {
     }
 
-    public TimerItem(String name, int hour, int minute, int second) {
-        this.name = name;
-        this.hour = hour;
-        this.minute = minute;
-        this.second = second;
+    public void calcRemainTime(long currTime) {
+        remainTime -=  (currTime - startTime);
+        if (remainTime < 0) {
+            remainTime = 0;
+        }
+    }
+
+    public void resetRemainTime() {
+        this.remainTime = (hour * 3600 + minute * 60 + second) * 1000;
     }
 
     public String toString() {
@@ -35,6 +46,8 @@ public class TimerItem implements Serializable {
         sb.append("ID: ").append(id);
         sb.append(", '").append(name).append("', ");
         sb.append(Utils.formatTime(hour, minute, second));
+        sb.append(", startTime:").append(startTime);
+        sb.append(", remainTime:").append(remainTime);
         return sb.toString();
     }
 }

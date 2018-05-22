@@ -3,6 +3,7 @@ package com.fht.simpletimer;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.CountDownTimer;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
@@ -22,8 +23,9 @@ import android.widget.Toast;
 import com.fht.simpletimer.db.DbIniter;
 import com.fht.simpletimer.db.TimerTable;
 
-import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 public class MainActivity extends AppCompatActivity {
     private static final String TAG = Const.TAG + MainActivity.class.getSimpleName();
@@ -39,6 +41,8 @@ public class MainActivity extends AppCompatActivity {
     // All the timers.
     private List<TimerItem> mTimers;
 
+    private Map<Long, MyCountDownTimer> map;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -46,6 +50,7 @@ public class MainActivity extends AppCompatActivity {
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
+        map = new HashMap<>();
         DbIniter.init();
         mTimers = new TimerTable(this).getTimerList();
         Log.i(TAG, "Exist timers:");
@@ -55,6 +60,20 @@ public class MainActivity extends AppCompatActivity {
         ListView listView = findViewById(R.id.timerList);
         mAdapter = new TimerListAdapter();
         listView.setAdapter(mAdapter);
+
+        listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                TimerItem item = mTimers.get(position);
+                item.running = ! item.running;
+                if (item.running) {
+                    startTimer(item, ((ViewHolder)view.getTag()).remainTime);
+                } else {
+                    cancelTimer(item);
+                }
+                mAdapter.notifyDataSetChanged();
+            }
+        });
 
         listView.setOnCreateContextMenuListener(new View.OnCreateContextMenuListener() {
             @Override
@@ -72,6 +91,14 @@ public class MainActivity extends AppCompatActivity {
         // Inflate the menu; this adds items to the action bar if it is present.
         getMenuInflater().inflate(R.menu.menu_main, menu);
         return true;
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        for (Map.Entry<Long, MyCountDownTimer> entry : map.entrySet()) {
+            entry.getValue().cancel();
+        }
     }
 
     @Override
@@ -184,6 +211,37 @@ public class MainActivity extends AppCompatActivity {
         Log.i(TAG, "Update timer. " + item);
     }
 
+    void createCountTimer(TimerItem item, TextView remainTimeView, long remainTime) {
+        Log.i(TAG, "Create CountDownTimer. " + item);
+        MyCountDownTimer countDownTimer = new MyCountDownTimer(remainTime, 1000, item, remainTimeView);
+        map.put(item.id, countDownTimer);
+        countDownTimer.start();
+    }
+
+    void startTimer(TimerItem item, TextView remainTimeView) {
+        if (item.remainTime <= 0) {
+            item.resetRemainTime();
+        }
+        item.startTime = System.currentTimeMillis();
+
+        createCountTimer(item, remainTimeView, item.remainTime);
+    }
+
+    void cancelTimer(TimerItem item) {
+        long currTime = System.currentTimeMillis();
+        Log.i(TAG, "Curr time: " + currTime);
+        Log.i(TAG, "Before cancel: " + item);
+        item.calcRemainTime(currTime);
+        item.startTime = 0;
+        Log.i(TAG, "After cancel: " + item);
+
+        Log.i(TAG, "Cancel timer. ID: " + item.id);
+        MyCountDownTimer countDownTimer = map.remove(item.id);
+        if (countDownTimer != null) {
+            countDownTimer.cancel();
+        }
+    }
+
     private void showRemainedTime(TextView textView, long remainedTime) {
         long temp = remainedTime / 1000;
         int hour = (int) temp / 3600;
@@ -191,14 +249,6 @@ public class MainActivity extends AppCompatActivity {
         int second = (int) temp % 60;
 
         textView.setText(Utils.formatTime(hour, minute, second));
-    }
-
-    private List<TimerItem> getTimerList() {
-        List<TimerItem> list = new ArrayList<>();
-        list.add(new TimerItem("5 seconds", 0, 0, 5));
-        list.add(new TimerItem("Siesta (30 minutes)", 0, 30, 0));
-        list.add(new TimerItem("Bake bread (60 minutes)", 1, 0, 0));
-        return list;
     }
 
     class TimerListAdapter extends BaseAdapter {
@@ -252,7 +302,12 @@ public class MainActivity extends AppCompatActivity {
             TimerItem item = (TimerItem) getItem(position);
             holder.timerName.setText(item.name);
             holder.totalTime.setText(Utils.formatTime(item.hour, item.minute, item.second));
-            showRemainedTime(holder.remainTime, 0);
+            showRemainedTime(holder.remainTime, item.remainTime);
+            if (item.running) {
+                holder.status.setImageResource(android.R.drawable.ic_media_pause);
+            } else {
+                holder.status.setImageResource(android.R.drawable.ic_media_play);
+            }
 
             return convertView;
         }
@@ -263,5 +318,29 @@ public class MainActivity extends AppCompatActivity {
         public TextView totalTime;
         public TextView remainTime;
         public ImageView status;
+    }
+
+    class MyCountDownTimer extends CountDownTimer {
+        private TimerItem mTimerItem;
+        private TextView mTextView;
+
+        MyCountDownTimer(long millisInFuture, long countDownInterval, TimerItem timerItem, TextView textView) {
+            super(millisInFuture, countDownInterval);
+            this.mTimerItem = timerItem;
+            this.mTextView = textView;
+        }
+
+        @Override
+        public void onTick(long millisUntilFinished) {
+            showRemainedTime(mTextView, millisUntilFinished);
+        }
+
+        @Override
+        public void onFinish() {
+            Log.i(TAG, "CountDownTimer finish. " + mTimerItem.toString());
+            mTimerItem.remainTime = 0;
+            mTimerItem.running = false;
+            mAdapter.notifyDataSetChanged();
+        }
     }
 }
