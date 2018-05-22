@@ -8,8 +8,22 @@
     <string name="hint_timer_name">Timer\'s name</string>
     <string name="title_add_timer">Add Timer</string>
     <string name="title_edit_timer">Edit Timer</string>
+    <string name="title_settings">Settings</string>
 
     <string name="menu_title_operation">Operation</string>
     <string name="menu_edit">Edit</string>
     <string name="menu_delete">Delete</string>
+
+    <string name="pref_ring_tone_title">Set Ringtone</string>
+    <string name="pref_ring_tone_summary">Choose your favorite voice as timer\'s tone.</string>
+    <string name="pref_ring_time_title">Duration of ringtone</string>
+    <string name="pref_ring_time_summary">Ringtone will be stopped when time\'s up.</string>
+    <string name="pref_vibrate_title">Vibration while play tone</string>
+    <string name="pref_vibrate_summary_on">Enable vibration.</string>
+    <string name="pref_vibrate_summary_off">Disable vibration.</string>
+    <string name="pref_close_activity_title">Close alarm activity if tone time\'s up.</string>
+    <string name="pref_close_activity_summary_on">Close.</string>
+    <string name="pref_close_activity_summary_off">Not close.</string>
+    <string name="pref_home_title">Home</string>
+    <string name="pref_home_summary">Visit app home.</string>
 </resources>

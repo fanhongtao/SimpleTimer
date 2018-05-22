@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="utf-8"?>
+<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <RingtonePreference
+        android:key="pref_ring_tone"
+        android:ringtoneType="alarm"
+        android:showSilent="true"
+        android:title="@string/pref_ring_tone_title"
+        android:summary="@string/pref_ring_tone_summary"/>
+
+    <com.fht.simpletimer.seekbar.SeekBarPreference
+        android:key="pref_ring_time"
+        android:title="@string/pref_ring_time_title"
+        app:max="100"
+        app:progress="20"
+        android:summary="@string/pref_ring_time_summary"/>
+
+    <SwitchPreference
+        android:key="pref_vibrate"
+        android:title="@string/pref_vibrate_title"
+        android:summaryOn="@string/pref_vibrate_summary_on"
+        android:summaryOff="@string/pref_vibrate_summary_off"/>
+
+    <SwitchPreference
+        android:key="pref_close_activity"
+        android:title="@string/pref_close_activity_title"
+        android:summaryOn="@string/pref_close_activity_summary_on"
+        android:summaryOff="@string/pref_close_activity_summary_off"/>
+
+    <Preference/>
+
+    <Preference
+        android:key="pref_home"
+        android:title="@string/pref_home_title"
+        android:summary="@string/pref_home_summary"/>
+</PreferenceScreen>
