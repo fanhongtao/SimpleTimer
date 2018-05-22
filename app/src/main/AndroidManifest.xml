@@ -22,6 +22,12 @@
         <activity android:name=".SettingActivity" />
         <activity android:name=".TimerEditActivity" />
         <activity android:name=".AlarmActivity"></activity>
+
+        <receiver android:name=".TimerExpireReceiver">
+            <intent-filter>
+                <action android:name="com.fht.simpletimer.TIMER_EXPIRE_INTENT" />
+            </intent-filter>
+        </receiver>
     </application>
 
 </manifest>

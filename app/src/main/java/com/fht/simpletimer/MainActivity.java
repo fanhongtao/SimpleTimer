@@ -1,5 +1,7 @@
 package com.fht.simpletimer;
 
+import android.app.AlarmManager;
+import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
@@ -225,9 +227,22 @@ public class MainActivity extends AppCompatActivity {
         item.startTime = System.currentTimeMillis();
 
         createCountTimer(item, remainTimeView, item.remainTime);
+
+        AlarmManager am = (AlarmManager)getSystemService(Context.ALARM_SERVICE);
+        Intent intent = new Intent(Const.TIMER_EXPIRE_INTENT);
+        intent.putExtra(Const.ID, item.id);
+        PendingIntent operation = PendingIntent.getBroadcast(this, (int)item.id, intent, 0);
+        long triggerTime = System.currentTimeMillis() + item.remainTime;
+        am.set(AlarmManager.RTC_WAKEUP, triggerTime, operation);
     }
 
     void cancelTimer(TimerItem item) {
+        AlarmManager am = (AlarmManager)getSystemService(Context.ALARM_SERVICE);
+        Intent intent = new Intent(Const.TIMER_EXPIRE_INTENT);
+        intent.putExtra(Const.ID, item.id);
+        PendingIntent operation = PendingIntent.getBroadcast(this, (int)item.id, intent, 0);
+        am.cancel(operation);
+
         long currTime = System.currentTimeMillis();
         Log.i(TAG, "Curr time: " + currTime);
         Log.i(TAG, "Before cancel: " + item);
