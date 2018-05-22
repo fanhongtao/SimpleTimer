@@ -2,7 +2,7 @@
 
 I found a icon,free for commercial use, in [Haotu](http://www.haotu.net/icon/201090/alarm-clock).
 
-Download the icon with SVG format (alarm_clock.svg).
+Download the icon with SVG format: [alarm_clock.svg](ref/alarm_clock.svg).
 
 In AS, 'File' -> 'New' -> 'Image Asset'
 
