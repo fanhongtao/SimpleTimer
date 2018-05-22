@@ -73,7 +73,7 @@ public class TimerTable extends Table<TimerItem> {
     @Override
     protected TimerItem readCursor(Cursor cursor) {
         TimerItem item = new TimerItem();
-        item.id = cursor.getLong(cursor.getColumnIndex(COL_ID));
+        item.id = cursor.getInt(cursor.getColumnIndex(COL_ID));
         item.name = cursor.getString(cursor.getColumnIndex(COL_NAME));
         item.hour = cursor.getInt(cursor.getColumnIndex(COL_HOUR));
         item.minute = cursor.getInt(cursor.getColumnIndex(COL_MINUTE));

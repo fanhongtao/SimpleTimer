@@ -43,7 +43,7 @@ public class MainActivity extends AppCompatActivity {
     // All the timers.
     private List<TimerItem> mTimers;
 
-    private Map<Long, MyCountDownTimer> map;
+    private Map<Integer, MyCountDownTimer> map;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -98,7 +98,7 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onDestroy() {
         super.onDestroy();
-        for (Map.Entry<Long, MyCountDownTimer> entry : map.entrySet()) {
+        for (Map.Entry<Integer, MyCountDownTimer> entry : map.entrySet()) {
             entry.getValue().cancel();
         }
     }
@@ -180,7 +180,7 @@ public class MainActivity extends AppCompatActivity {
 
     void addTimer(Intent intent) {
         TimerItem timerItem = (TimerItem)intent.getSerializableExtra(Const.TIMER);
-        timerItem.id = new TimerTable(this).addTimer(timerItem);
+        timerItem.id = (int)new TimerTable(this).addTimer(timerItem);
         if (-1 != timerItem.id) {
             mTimers.add(timerItem);
             mAdapter.notifyDataSetChanged();
@@ -231,7 +231,7 @@ public class MainActivity extends AppCompatActivity {
         AlarmManager am = (AlarmManager)getSystemService(Context.ALARM_SERVICE);
         Intent intent = new Intent(Const.TIMER_EXPIRE_INTENT);
         intent.putExtra(Const.ID, item.id);
-        PendingIntent operation = PendingIntent.getBroadcast(this, (int)item.id, intent, 0);
+        PendingIntent operation = PendingIntent.getBroadcast(this, item.id, intent, 0);
         long triggerTime = System.currentTimeMillis() + item.remainTime;
         am.set(AlarmManager.RTC_WAKEUP, triggerTime, operation);
     }
@@ -240,7 +240,7 @@ public class MainActivity extends AppCompatActivity {
         AlarmManager am = (AlarmManager)getSystemService(Context.ALARM_SERVICE);
         Intent intent = new Intent(Const.TIMER_EXPIRE_INTENT);
         intent.putExtra(Const.ID, item.id);
-        PendingIntent operation = PendingIntent.getBroadcast(this, (int)item.id, intent, 0);
+        PendingIntent operation = PendingIntent.getBroadcast(this, item.id, intent, 0);
         am.cancel(operation);
 
         long currTime = System.currentTimeMillis();

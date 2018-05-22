@@ -4,7 +4,13 @@ import java.io.Serializable;
 
 public class TimerItem implements Serializable {
 
-    public long id;
+    // ID of the timer. Also the ROWID ( or primary key ) of the TimerTable.
+    // Integer.MAX_VALUE = 0x7fffffff, or 2,147,483,647.
+    // There are 60 * 60 * 24 * 365 = 31,536,000 seconds each year.
+    // 2,147,483,647 / 31,536,000 = 68.096.. years.
+    // That means, even if someone add a new timer every second, it will cost him 68 years to add more than 2 billion timers.
+    // So, integer is enough for a timer app.
+    public int id;
 
     // Name of timer
     public String name;
