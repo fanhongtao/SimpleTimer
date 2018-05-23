@@ -28,4 +28,12 @@
     <string name="pref_close_activity_summary_off">Not close.</string>
     <string name="pref_home_title">Home</string>
     <string name="pref_home_summary">Visit app home.</string>
+
+    <string name="timer_name_5s">5 seconds</string>
+    <string name="timer_name_1m">1 minute (jump rope)</string>
+    <string name="timer_name_3m">3 minutes (rest eyes)</string>
+    <string name="timer_name_10m">10 minutes (tea break)</string>
+    <string name="timer_name_30m">30 minutes (Siesta)</string>
+    <string name="timer_name_40m">40 minutes (meditation)</string>
+    <string name="timer_name_60m">60 minutes (reading)</string>
 </resources>

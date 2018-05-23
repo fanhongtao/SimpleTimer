@@ -21,7 +21,7 @@ public abstract class Table<T> {
 
     abstract protected  List<TableColumn> getColumns();
 
-    protected List<String> getCreateTableSQLs() {
+    protected List<String> getCreateTableSQLs(Context context) {
         List<String> sqls = new ArrayList<>();
 
         StringBuilder sb = new StringBuilder(256);

@@ -4,6 +4,7 @@ import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
 
+import com.fht.simpletimer.R;
 import com.fht.simpletimer.TimerItem;
 import com.fht.simpletimer.dbframe.Table;
 import com.fht.simpletimer.dbframe.TableColumn;
@@ -41,19 +42,19 @@ public class TimerTable extends Table<TimerItem> {
     }
 
     @Override
-    protected List<String> getCreateTableSQLs() {
-        List<String> sqlList = super.getCreateTableSQLs();
+    protected List<String> getCreateTableSQLs(Context context) {
+        List<String> sqlList = super.getCreateTableSQLs(context);
 
         String sql = "CREATE INDEX idx_create_time on " + TABLE_NAME + " (" + COL_CREATE_TIME + ");";
         sqlList.add(sql);
 
-        sqlList.add(getInsertSql("5 seconds", 0, 0, 5));
-        sqlList.add(getInsertSql("1 minute (jump rope)", 0, 1, 0));
-        sqlList.add(getInsertSql("3 minutes (rest eyes)", 0, 3, 0));
-        sqlList.add(getInsertSql("10 minutes (tee break)", 0, 10, 0));
-        sqlList.add(getInsertSql("30 minutes (Siesta)", 0, 30, 0));
-        sqlList.add(getInsertSql("40 minutes (meditation)", 0, 40, 0));
-        sqlList.add(getInsertSql("60 minutes (reading)", 1, 0, 0));
+        sqlList.add(getInsertSql(context.getString(R.string.timer_name_5s), 0, 0, 5));
+        sqlList.add(getInsertSql(context.getString(R.string.timer_name_1m), 0, 1, 0));
+        sqlList.add(getInsertSql(context.getString(R.string.timer_name_3m), 0, 3, 0));
+        sqlList.add(getInsertSql(context.getString(R.string.timer_name_10m), 0, 10, 0));
+        sqlList.add(getInsertSql(context.getString(R.string.timer_name_30m), 0, 30, 0));
+        sqlList.add(getInsertSql(context.getString(R.string.timer_name_40m), 0, 40, 0));
+        sqlList.add(getInsertSql(context.getString(R.string.timer_name_60m), 1, 0, 0));
 
         return sqlList;
     }

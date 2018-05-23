@@ -39,15 +39,17 @@ public class SQLiteManager {
     }
 
     protected class DBOpenHelper extends SQLiteOpenHelper {
+        private Context mContext;
         public DBOpenHelper(Context context, String name,
                             SQLiteDatabase.CursorFactory factory, int version) {
             super(context, name, factory, version);
+            mContext = context;
         }
 
         @Override
         public void onCreate(SQLiteDatabase db) {
             for (Table table : mTables) {
-                List<String> sqlList = table.getCreateTableSQLs();
+                List<String> sqlList = table.getCreateTableSQLs(mContext);
                 for (String sql : sqlList) {
                     db.execSQL(sql);
                 }
