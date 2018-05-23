@@ -9,7 +9,7 @@
     <RelativeLayout
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="16dip"
+        android:layout_marginStart="8dip"
         android:layout_marginEnd="8dip"
         android:layout_marginTop="6dip"
         android:layout_marginBottom="6dip"
@@ -19,8 +19,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:singleLine="true"
-            android:textAppearance="?android:attr/textAppearanceLarge"
-            android:textSize="16sp"
+            android:textAppearance="?android:attr/textAppearanceMedium"
             android:ellipsize="marquee"
             android:fadingEdge="horizontal" />
 

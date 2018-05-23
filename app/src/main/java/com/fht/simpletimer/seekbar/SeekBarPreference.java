@@ -2,6 +2,7 @@ package com.fht.simpletimer.seekbar;
 
 import android.content.Context;
 import android.content.res.TypedArray;
+import android.os.Build;
 import android.preference.Preference;
 import android.util.AttributeSet;
 import android.view.KeyEvent;
@@ -28,7 +29,12 @@ public class SeekBarPreference extends Preference
         setProgress(a.getInt(R.styleable.SeekBarPreference_progress, mProgress));
         a.recycle();
 
-        setLayoutResource(R.layout.preference_widget_seekbar);
+        // NB: Not for sure, since I just tested in two phones.
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+            setLayoutResource(R.layout.preference_widget_seekbar);
+        } else {
+            setLayoutResource(R.layout.preference_widget_seekbar_4);
+        }
     }
 
     public SeekBarPreference(Context context, AttributeSet attrs) {
