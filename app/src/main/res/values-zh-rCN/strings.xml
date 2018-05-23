@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">简洁定时器</string>
+    <string name="action_add">添加</string>
+    <string name="action_settings">设置</string>
+    <string name="button_ok">确认</string>
+    <string name="button_cancel">取消</string>
+    <string name="label_name">名字</string>
+    <string name="hint_timer_name">定时器的名字</string>
+    <string name="title_add_timer">添加定时器</string>
+    <string name="title_alarm">闹铃</string>
+    <string name="title_edit_timer">编辑定时器</string>
+    <string name="title_settings">设置</string>
+    <string name="menu_title_operation">操作</string>
+    <string name="menu_edit">编辑</string>
+    <string name="menu_delete">删除</string>
+    <string name="menu_reset">重置</string>
+    <string name="pref_ring_tone_title">选择铃音</string>
+    <string name="pref_ring_tone_summary">设置自定义铃音</string>
+    <string name="pref_ring_time_title">铃音时长</string>
+    <string name="pref_ring_time_summary">铃音的最大播放时长</string>
+    <string name="pref_vibrate_title">播放铃音时是否振动</string>
+    <string name="pref_vibrate_summary_on">振动</string>
+    <string name="pref_vibrate_summary_off">不振动</string>
+    <string name="pref_close_activity_title">自动关闭闹铃界面</string>
+    <string name="pref_close_activity_summary_on">关闭</string>
+    <string name="pref_close_activity_summary_off">不关闭</string>
+    <string name="pref_home_title">主页</string>
+    <string name="pref_home_summary">访问App主页</string>
+    <string name="timer_name_5s">5秒</string>
+    <string name="timer_name_1m">1分钟（跳绳）</string>
+    <string name="timer_name_3m">3分钟（闭目养神）</string>
+    <string name="timer_name_10m">10分钟（茶歇）</string>
+    <string name="timer_name_30m">30分钟（午睡）</string>
+    <string name="timer_name_40m">40分钟（静坐）</string>
+    <string name="timer_name_60m">60分钟（阅读）</string>
+</resources>
