@@ -47,21 +47,21 @@ public class TimerTable extends Table<TimerItem> {
         String sql = "CREATE INDEX idx_create_time on " + TABLE_NAME + " (" + COL_CREATE_TIME + ");";
         sqlList.add(sql);
 
-        sql = "insert into " + TABLE_NAME +
-                " (name, hour, minute, second, create_time)" +
-                " values ('5 seconds', 0, 0, 5, " + System.currentTimeMillis() + ");";
-        sqlList.add(sql);
+        sqlList.add(getInsertSql("5 seconds", 0, 0, 5));
+        sqlList.add(getInsertSql("1 minute (jump rope)", 0, 1, 0));
+        sqlList.add(getInsertSql("3 minutes (rest eyes)", 0, 3, 0));
+        sqlList.add(getInsertSql("10 minutes (tee break)", 0, 10, 0));
+        sqlList.add(getInsertSql("30 minutes (Siesta)", 0, 30, 0));
+        sqlList.add(getInsertSql("40 minutes (meditation)", 0, 40, 0));
+        sqlList.add(getInsertSql("60 minutes (reading)", 1, 0, 0));
 
-        sql = "insert into " + TABLE_NAME +
-                " (name, hour, minute, second, create_time)" +
-                " values ('30 minutes (Siesta)', 0, 30, 0, " + System.currentTimeMillis() + ");";
-        sqlList.add(sql);
-
-        sql = "insert into " + TABLE_NAME +
-                " (name, hour, minute, second, create_time)" +
-                " values ('60 minutes (Bake bread)', 1, 0, 0, " + System.currentTimeMillis() + ");";
-        sqlList.add(sql);
         return sqlList;
+    }
+
+    private String getInsertSql(String name, int hour, int minute, int second) {
+        return "insert into " + TABLE_NAME +
+                " (name, hour, minute, second, create_time) values " +
+                " ('" + name + "', " + hour + ", " + minute + ", " + second + ", " + System.currentTimeMillis() + ");";
     }
 
     public long addTimer(TimerItem item) {
