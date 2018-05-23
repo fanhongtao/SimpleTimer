@@ -4,6 +4,7 @@ import android.app.AlarmManager;
 import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
+import android.os.Build;
 import android.os.Bundle;
 import android.os.CountDownTimer;
 import android.support.v7.app.AppCompatActivity;
@@ -276,7 +277,14 @@ public class MainActivity extends AppCompatActivity {
         intent.putExtra(Const.ID, item.id);
         PendingIntent operation = PendingIntent.getBroadcast(this, item.id, intent, 0);
         long triggerTime = System.currentTimeMillis() + item.remainTime;
-        am.set(AlarmManager.RTC_WAKEUP, triggerTime, operation);
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+            AlarmManager.AlarmClockInfo info = new AlarmManager.AlarmClockInfo(triggerTime, null);
+            am.setAlarmClock(info, operation);
+        } else if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
+            am.setExact(AlarmManager.RTC_WAKEUP, triggerTime, operation);
+        } else {
+            am.set(AlarmManager.RTC_WAKEUP, triggerTime, operation);
+        }
     }
 
     void cancelTimer(TimerItem item) {
