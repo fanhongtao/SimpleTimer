@@ -5,6 +5,7 @@ Native android preference does not support 'SeekBarPreference'.
 In preference support library v7, we can find 'SeekBarPreference'. But can NOT find 'RingtonePreference'.
 
 In [Android Support library - preference v7 bugfix](https://github.com/Gericop/Android-Support-Preference-V7-Fix), we can find both 'SeekBarPreference' and 'RingtonePreference'. But the 'RingtonePreference' can only choose ringtone of the system.
+For more infomation, see branch 'support-v7-fix'.
 
 In order to choose my favorite song as alarm tone, so I write a simple SeekBarPreference.
 
