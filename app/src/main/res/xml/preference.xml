@@ -11,7 +11,7 @@
         android:title="@string/pref_ring_tone_title"
         android:summary="@string/pref_ring_tone_summary"/>
 
-    <com.fht.simpletimer.seekbar.SeekBarPreference
+    <SeekBarPreference
         android:key="pref_ring_time"
         android:title="@string/pref_ring_time_title"
         app:max="100"

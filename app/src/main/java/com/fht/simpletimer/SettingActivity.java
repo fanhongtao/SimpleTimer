@@ -3,22 +3,23 @@ package com.fht.simpletimer;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
-import android.preference.Preference;
-import android.preference.PreferenceFragment;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.preference.Preference;
+
+import com.takisoft.fix.support.v7.preference.PreferenceFragmentCompat;
 
 public class SettingActivity extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        getFragmentManager().beginTransaction()
+        getSupportFragmentManager().beginTransaction()
                 .replace(android.R.id.content, new SettingFragment())
                 .commit();
         setTitle(R.string.title_settings);
     }
 
-    public static class SettingFragment extends PreferenceFragment {
+    public static class SettingFragment extends PreferenceFragmentCompat {
         @Override
         public void onCreate(Bundle savedInstanceState) {
             super.onCreate(savedInstanceState);
@@ -34,6 +35,11 @@ public class SettingActivity extends AppCompatActivity {
                     return true;
                 }
             });
+        }
+
+        @Override
+        public void onCreatePreferencesFix(Bundle savedInstanceState, String rootKey) {
+            // setPreferencesFromResource(R.xml.settings, rootKey);
         }
     }
 }
