@@ -37,4 +37,6 @@
     <string name="timer_name_30m">30 minutes (Siesta)</string>
     <string name="timer_name_40m">40 minutes (meditation)</string>
     <string name="timer_name_60m">60 minutes (reading)</string>
+
+    <string name="toast_cant_play">Can\'t play tone.</string>
 </resources>

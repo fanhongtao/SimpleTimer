@@ -14,6 +14,7 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.WindowManager;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.fht.simpletimer.db.TimerTable;
 
@@ -70,13 +71,20 @@ public class AlarmActivity extends AppCompatActivity {
         SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(this) ;
 
         mMediaPlayer = MediaPlayer.create(this, getAlarmRingtoneUri(prefs));
-        mMediaPlayer.setLooping(true);
-        mMediaPlayer.start();
-        int prefVolume = prefs.getInt("pref_ring_volume", 3);
-        Log.i(TAG, "set volume to: " + prefVolume);
-        mAudioManager.setStreamVolume(AudioManager.STREAM_MUSIC,
-                prefVolume,
-                AudioManager.FLAG_PLAY_SOUND);
+        if (mMediaPlayer == null) {
+            mMediaPlayer = MediaPlayer.create(this, getDefaultUri());
+        }
+        if (mMediaPlayer != null) {
+            mMediaPlayer.setLooping(true);
+            mMediaPlayer.start();
+            int prefVolume = prefs.getInt("pref_ring_volume", 3);
+            Log.i(TAG, "set volume to: " + prefVolume);
+            mAudioManager.setStreamVolume(AudioManager.STREAM_MUSIC,
+                    prefVolume,
+                    AudioManager.FLAG_PLAY_SOUND);
+        } else {
+            Toast.makeText(this, R.string.toast_cant_play, Toast.LENGTH_LONG).show();
+        }
 
         boolean needVibrate = prefs.getBoolean("pref_vibrate", false);
         if (needVibrate) {
@@ -113,12 +121,17 @@ public class AlarmActivity extends AppCompatActivity {
         Log.i(TAG, "Ring tone in pref: " + ringTonePref);
         Uri uri;
         if ((ringTonePref == null) || (ringTonePref.length() == 0)) {
-            uri = RingtoneManager.getActualDefaultRingtoneUri(this, RingtoneManager.TYPE_ALARM);
-            Log.i(TAG, "Get default Alarm ring tone. uri: " + uri);
+            uri = getDefaultUri();
         } else {
             uri = Uri.parse(ringTonePref);
             Log.i(TAG, "Get ring tone through pref. uri: " + uri);
         }
+        return uri;
+    }
+
+    private Uri getDefaultUri() {
+        Uri uri = RingtoneManager.getActualDefaultRingtoneUri(this, RingtoneManager.TYPE_ALARM);
+        Log.i(TAG, "Get default Alarm ring tone. uri: " + uri);
         return uri;
     }
 

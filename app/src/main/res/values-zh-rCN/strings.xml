@@ -35,4 +35,5 @@
     <string name="timer_name_30m">30分钟（午睡）</string>
     <string name="timer_name_40m">40分钟（静坐）</string>
     <string name="timer_name_60m">60分钟（阅读）</string>
+    <string name="toast_cant_play">无法播放铃音。</string>
 </resources>
