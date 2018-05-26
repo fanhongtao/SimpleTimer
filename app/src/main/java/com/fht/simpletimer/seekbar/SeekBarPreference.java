@@ -71,7 +71,7 @@ public class SeekBarPreference extends Preference
         return a.getInt(index, 0);
     }
 
-    private void setMax(int max) {
+    public void setMax(int max) {
         if (max != mMax) {
             mMax = max;
         }

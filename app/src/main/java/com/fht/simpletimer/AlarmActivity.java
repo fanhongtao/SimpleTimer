@@ -1,7 +1,9 @@
 package com.fht.simpletimer;
 
+import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.media.AudioManager;
 import android.media.MediaPlayer;
 import android.media.RingtoneManager;
 import android.net.Uri;
@@ -21,6 +23,8 @@ import java.util.TimerTask;
 public class AlarmActivity extends AppCompatActivity {
     private static final String TAG = Const.TAG + AlarmActivity.class.getSimpleName();
 
+    private AudioManager mAudioManager;
+    private int mOldStreamVolume;
     private MediaPlayer mMediaPlayer = null;
     private Vibrator mVibrator = null;
     private Timer mTimer = new Timer();
@@ -42,6 +46,9 @@ public class AlarmActivity extends AppCompatActivity {
         table.setRemainTime(item);
         table.setStartTime(item);
 
+        mAudioManager = (AudioManager)getSystemService(Context.AUDIO_SERVICE);
+        mOldStreamVolume = mAudioManager.getStreamVolume(AudioManager.STREAM_MUSIC);
+        Log.i(TAG, "old volume: " + mOldStreamVolume);
         TextView nameView = findViewById(R.id.timerName);
         nameView.setText(item.name);
         startAlarm();
@@ -52,6 +59,10 @@ public class AlarmActivity extends AppCompatActivity {
         super.onDestroy();
         mTimer.cancel();
         stopAlarm();
+        Log.i(TAG, "reset volume to: " + mOldStreamVolume);
+        mAudioManager.setStreamVolume(AudioManager.STREAM_MUSIC,
+                mOldStreamVolume,
+                AudioManager.FLAG_PLAY_SOUND);
     }
 
     private void startAlarm() {
@@ -61,6 +72,11 @@ public class AlarmActivity extends AppCompatActivity {
         mMediaPlayer = MediaPlayer.create(this, getAlarmRingtoneUri(prefs));
         mMediaPlayer.setLooping(true);
         mMediaPlayer.start();
+        int prefVolume = prefs.getInt("pref_ring_volume", 3);
+        Log.i(TAG, "set volume to: " + prefVolume);
+        mAudioManager.setStreamVolume(AudioManager.STREAM_MUSIC,
+                prefVolume,
+                AudioManager.FLAG_PLAY_SOUND);
 
         boolean needVibrate = prefs.getBoolean("pref_vibrate", false);
         if (needVibrate) {

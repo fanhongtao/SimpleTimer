@@ -20,6 +20,7 @@
     <string name="pref_ring_tone_summary">Choose your favorite voice as timer\'s tone.</string>
     <string name="pref_ring_time_title">Duration of ringtone</string>
     <string name="pref_ring_time_summary">Ringtone will be stopped when time\'s up.</string>
+    <string name="pref_ring_volume_title">Volume of ringtone</string>
     <string name="pref_vibrate_title">Vibration while play tone</string>
     <string name="pref_vibrate_summary_on">Enable vibration.</string>
     <string name="pref_vibrate_summary_off">Disable vibration.</string>

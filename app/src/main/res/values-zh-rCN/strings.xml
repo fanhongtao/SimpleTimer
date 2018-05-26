@@ -19,6 +19,7 @@
     <string name="pref_ring_tone_summary">设置自定义铃音</string>
     <string name="pref_ring_time_title">铃音时长</string>
     <string name="pref_ring_time_summary">铃音的最大播放时长</string>
+    <string name="pref_ring_volume_title">铃音音量</string>
     <string name="pref_vibrate_title">播放铃音时是否振动</string>
     <string name="pref_vibrate_summary_on">振动</string>
     <string name="pref_vibrate_summary_off">不振动</string>

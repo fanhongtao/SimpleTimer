@@ -18,6 +18,12 @@
         app:progress="20"
         android:summary="@string/pref_ring_time_summary"/>
 
+    <com.fht.simpletimer.seekbar.SeekBarPreference
+        android:key="pref_ring_volume"
+        android:title="@string/pref_ring_volume_title"
+        app:max="10"
+        app:progress="5"/>
+
     <SwitchPreference
         android:key="pref_vibrate"
         android:title="@string/pref_vibrate_title"
