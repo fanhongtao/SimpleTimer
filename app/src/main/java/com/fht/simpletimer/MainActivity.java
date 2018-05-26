@@ -1,12 +1,17 @@
 package com.fht.simpletimer;
 
+import android.Manifest;
+import android.annotation.TargetApi;
 import android.app.AlarmManager;
 import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.CountDownTimer;
+import android.support.annotation.NonNull;
+import android.support.v4.app.ActivityCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
@@ -40,6 +45,8 @@ public class MainActivity extends AppCompatActivity {
     private final int MENU_EDIT_TIMER = 1;
     private final int MENU_DELETE_TIMER = 2;
     private final int MENU_RESET_TIMER = 3;
+
+    private final int READ_EXTERNAL_STORAGE_REQUEST_CODE = 1;
 
     protected TimerListAdapter mAdapter;
 
@@ -110,6 +117,8 @@ public class MainActivity extends AppCompatActivity {
                 menu.add(0, MENU_DELETE_TIMER, 0, R.string.menu_delete);
             }
         });
+
+        checkpermissions();
     }
 
     @Override
@@ -319,6 +328,27 @@ public class MainActivity extends AppCompatActivity {
         int second = (int) temp % 60;
 
         textView.setText(Utils.formatTime(hour, minute, second));
+    }
+
+    @TargetApi(Build.VERSION_CODES.M)
+    private void checkpermissions() {
+        int permission = checkSelfPermission(Manifest.permission.READ_EXTERNAL_STORAGE);
+        if (permission != PackageManager.PERMISSION_GRANTED) {
+            ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.READ_EXTERNAL_STORAGE},
+                    READ_EXTERNAL_STORAGE_REQUEST_CODE);
+        }
+    }
+
+    @Override
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+        switch (requestCode) {
+            case READ_EXTERNAL_STORAGE_REQUEST_CODE:
+                if (grantResults[0] != PackageManager.PERMISSION_GRANTED) {
+                    Toast.makeText(this, R.string.toast_need_read_external_permission, Toast.LENGTH_LONG).show();
+                }
+                break;
+        }
     }
 
     class TimerListAdapter extends BaseAdapter {

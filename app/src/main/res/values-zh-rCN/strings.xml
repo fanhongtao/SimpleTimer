@@ -36,4 +36,5 @@
     <string name="timer_name_40m">40分钟（静坐）</string>
     <string name="timer_name_60m">60分钟（阅读）</string>
     <string name="toast_cant_play">无法播放铃音。</string>
+    <string name="toast_need_read_external_permission">需要读取存储的权限来播放铃音.</string>
 </resources>

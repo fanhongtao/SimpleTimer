@@ -39,4 +39,5 @@
     <string name="timer_name_60m">60 minutes (reading)</string>
 
     <string name="toast_cant_play">Can\'t play tone.</string>
+    <string name="toast_need_read_external_permission">Need read external permission to play tone.</string>
 </resources>
