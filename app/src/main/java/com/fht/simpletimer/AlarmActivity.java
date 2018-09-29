@@ -43,9 +43,16 @@ public class AlarmActivity extends AppCompatActivity {
 
         TimerTable table = new TimerTable(this);
         TimerItem item = table.query(id);
+        long oldStartTime = item.startTime;
         item.startTime = item.remainTime = 0;
         table.setRemainTime(item);
         table.setStartTime(item);
+
+        TextView startTime = findViewById(R.id.startTime);
+        startTime.setText(Utils.formatDateTime(oldStartTime));
+
+        TextView currTime = findViewById(R.id.currentTime);
+        currTime.setText(Utils.formatDateTime(System.currentTimeMillis()));
 
         mAudioManager = (AudioManager)getSystemService(Context.AUDIO_SERVICE);
         mOldStreamVolume = mAudioManager.getStreamVolume(AudioManager.STREAM_MUSIC);
