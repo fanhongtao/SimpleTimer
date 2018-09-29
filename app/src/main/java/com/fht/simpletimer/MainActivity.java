@@ -283,6 +283,7 @@ public class MainActivity extends AppCompatActivity {
 
         AlarmManager am = (AlarmManager)getSystemService(Context.ALARM_SERVICE);
         Intent intent = new Intent(Const.TIMER_EXPIRE_INTENT);
+        intent.setClass(this, TimerExpireReceiver.class);
         intent.putExtra(Const.ID, item.id);
         PendingIntent operation = PendingIntent.getBroadcast(this, item.id, intent, 0);
         long triggerTime = System.currentTimeMillis() + item.remainTime;
