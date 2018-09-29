@@ -2,6 +2,7 @@
 <resources>
     <string name="app_name">简洁定时器</string>
     <string name="action_add">添加</string>
+    <string name="action_clear">清除</string>
     <string name="action_history">历史</string>
     <string name="action_settings">设置</string>
     <string name="button_ok">确认</string>

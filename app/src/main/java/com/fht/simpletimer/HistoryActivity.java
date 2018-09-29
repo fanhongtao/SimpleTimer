@@ -6,6 +6,8 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
@@ -34,6 +36,36 @@ public class HistoryActivity extends AppCompatActivity {
         ListView listView = findViewById(R.id.historyList);
         mAdapter = new HistoryListAdapter();
         listView.setAdapter(mAdapter);
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        // Inflate the menu; this adds items to the action bar if it is present.
+        getMenuInflater().inflate(R.menu.menu_history, menu);
+        return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        // Handle action bar item clicks here. The action bar will
+        // automatically handle clicks on the Home/Up button, so long
+        // as you specify a parent activity in AndroidManifest.xml.
+        int id = item.getItemId();
+
+        switch (id) {
+            case R.id.action_clear:
+                cleanHistoryTable();
+                return true;
+        }
+
+        return super.onOptionsItemSelected(item);
+    }
+
+    private void cleanHistoryTable() {
+        HistoryTable table = new HistoryTable(this);
+        table.deleteAll();
+        mHistories = table.getHistoryList();
+        mAdapter.notifyDataSetChanged();
     }
 
     class HistoryListAdapter extends BaseAdapter {
