@@ -216,9 +216,10 @@ public class MainActivity extends AppCompatActivity {
 
     void addTimer(Intent intent) {
         TimerItem timerItem = (TimerItem)intent.getSerializableExtra(Const.TIMER);
-        timerItem.id = (int)new TimerTable(this).addTimer(timerItem);
+        TimerTable table = new TimerTable(this);
+        timerItem.id = (int)table.addTimer(timerItem);
         if (-1 != timerItem.id) {
-            mTimers.add(timerItem);
+            mTimers = table.getTimerList();
             mAdapter.notifyDataSetChanged();
             Log.i(TAG, "Create timer. " + timerItem);
         } else {

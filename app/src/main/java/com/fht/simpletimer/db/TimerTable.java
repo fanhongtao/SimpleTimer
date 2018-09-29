@@ -89,7 +89,8 @@ public class TimerTable extends Table<TimerItem> {
     }
 
     public List<TimerItem> getTimerList() {
-        return queryAllByOrder(COL_CREATE_TIME + " ASC");
+        return queryAllByOrder(COL_HOUR + " ASC, " + COL_MINUTE + " ASC, "
+                + COL_SECOND + " ASC, " + COL_CREATE_TIME + " ASC");
     }
 
     public int updateTimer(TimerItem item) {
