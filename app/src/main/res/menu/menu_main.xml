@@ -9,6 +9,12 @@
         android:title="@string/action_add"
         app:showAsAction="ifRoom" />
     <item
+        android:id="@+id/action_history"
+        android:orderInCategory="100"
+        android:icon="@android:drawable/ic_menu_recent_history"
+        android:title="@string/action_history"
+        app:showAsAction="ifRoom" />
+    <item
         android:id="@+id/action_settings"
         android:orderInCategory="100"
         android:icon="@android:drawable/ic_menu_preferences"

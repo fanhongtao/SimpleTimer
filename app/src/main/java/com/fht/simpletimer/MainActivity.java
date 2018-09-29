@@ -147,6 +147,9 @@ public class MainActivity extends AppCompatActivity {
             case R.id.action_add:
                 startAddTimerActivity();
                 return true;
+            case R.id.action_history:
+                startHistoryActivity();
+                return true;
             case R.id.action_settings:
                 startSettingActivity();
                 return true;
@@ -205,6 +208,11 @@ public class MainActivity extends AppCompatActivity {
     void startAddTimerActivity() {
         Intent intent = new Intent(this, TimerEditActivity.class);
         startActivityForResult(intent, ADD_TIMER);
+    }
+
+    void startHistoryActivity() {
+        Intent intent = new Intent(this, HistoryActivity.class);
+        startActivity(intent);
     }
 
     void startEditTimerActivity(TimerItem timerItem, int index) {

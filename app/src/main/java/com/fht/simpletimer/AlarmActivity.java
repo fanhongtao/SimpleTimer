@@ -16,6 +16,7 @@ import android.view.WindowManager;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.fht.simpletimer.db.HistoryTable;
 import com.fht.simpletimer.db.TimerTable;
 
 import java.util.Timer;
@@ -48,11 +49,17 @@ public class AlarmActivity extends AppCompatActivity {
         table.setRemainTime(item);
         table.setStartTime(item);
 
+        HistoryItem history = new HistoryItem();
+        history.name = item.name;
+        history.startTime = oldStartTime;
+        history.stopTime = System.currentTimeMillis();
+        new HistoryTable(this).addHistory(history);
+
         TextView startTime = findViewById(R.id.startTime);
         startTime.setText(Utils.formatDateTime(oldStartTime));
 
         TextView currTime = findViewById(R.id.currentTime);
-        currTime.setText(Utils.formatDateTime(System.currentTimeMillis()));
+        currTime.setText(Utils.formatDateTime(history.stopTime));
 
         mAudioManager = (AudioManager)getSystemService(Context.AUDIO_SERVICE);
         mOldStreamVolume = mAudioManager.getStreamVolume(AudioManager.STREAM_MUSIC);

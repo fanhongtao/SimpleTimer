@@ -2,11 +2,13 @@
 <resources>
     <string name="app_name">简洁定时器</string>
     <string name="action_add">添加</string>
+    <string name="action_history">历史</string>
     <string name="action_settings">设置</string>
     <string name="button_ok">确认</string>
     <string name="button_cancel">取消</string>
     <string name="label_name">名字</string>
     <string name="hint_timer_name">定时器的名字</string>
+    <string name="title_activity_history">定时器使用记录</string>
     <string name="title_add_timer">添加定时器</string>
     <string name="title_alarm">闹铃</string>
     <string name="title_edit_timer">编辑定时器</string>
